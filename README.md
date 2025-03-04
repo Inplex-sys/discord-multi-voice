@@ -8,6 +8,12 @@ A Discord selfbot client that allows you to join multiple voice channels through
 -   Check Discord API latency with the `Ping` command
 -   Colorful console logging with the `Logs` utility
 
+
+
+https://github.com/user-attachments/assets/29415551-890e-494e-afac-b16926c67505
+
+
+
 ## Installation
 
 To install dependencies:
