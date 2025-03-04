@@ -1,11 +1,19 @@
 import { Client, Message } from "discord.js-selfbot-v13";
 
 import Command from "@Commands/command";
+import Credits from "@Utils/Credits";
 
 export default class Voice extends Command {
 	public static metadata = {
 		name: "voice",
-		parameters: ["link"],
+		parameters: [
+			{
+				name: "link",
+				type: "string",
+				description: "The link to the voice channel.",
+				required: true,
+			},
+		],
 		description: "Join a voice channel in duplicate mode.",
 		aliases: [],
 	};
@@ -20,20 +28,24 @@ export default class Voice extends Command {
 		client.on("ready", async () => {
 			if (!client.user || !client.user.username) {
 				this.message.channel.send(
-					"❌ Something went wrong while logging in, double check your token and try again."
+					Credits.Append(
+						"❌ Something went wrong while logging in, double check your token and try again."
+					)
 				);
 
 				process.exit(1);
 			}
 
 			this.message.channel.send(
-				`✅ Created a new client and logged in as ${client.user.username}.`
+				Credits.Append(
+					`✅ Created a new client and logged in as ${client.user.username}.`
+				)
 			);
 
 			const guild = client.guilds.cache.get(guildId);
 			if (!guild) {
 				this.message.channel.send(
-					"⚠️ The guild you provided does not exist."
+					Credits.Append("⚠️ The guild you provided does not exist.")
 				);
 				return;
 			}
@@ -44,14 +56,18 @@ export default class Voice extends Command {
 
 			if (!voiceChannel) {
 				this.message.channel.send(
-					"⚠️ The voice channel you provided does not exist."
+					Credits.Append(
+						"⚠️ The voice channel you provided does not exist."
+					)
 				);
 				return;
 			}
 
 			if (voiceChannel.type !== "GUILD_VOICE") {
 				this.message.channel.send(
-					"⚠️ The channel you provided is not a voice channel."
+					Credits.Append(
+						"⚠️ The channel you provided is not a voice channel."
+					)
 				);
 				return;
 			}
@@ -72,14 +88,7 @@ export default class Voice extends Command {
 
 	async execute() {
 		const parameters = await this.getParameters();
-		if (parameters.length != this.parameters.length) {
-			this.message.channel.send(
-				`⚠️ You must provide the following parameters: ${this.parameters.join(
-					", "
-				)}.`
-			);
-			return;
-		}
+		if (!parameters) return;
 
 		const [link] = parameters;
 
@@ -87,7 +96,9 @@ export default class Voice extends Command {
 
 		if (!guildId || !channelId) {
 			this.message.channel.send(
-				"⚠️ The link you provided is invalid. Please provide a valid link."
+				Credits.Append(
+					"⚠️ The link you provided is invalid. Please provide a valid link."
+				)
 			);
 			return;
 		}
@@ -95,7 +106,7 @@ export default class Voice extends Command {
 		const guild = this.message.client.guilds.cache.get(guildId);
 		if (!guild) {
 			this.message.channel.send(
-				"⚠️ The guild you provided does not exist."
+				Credits.Append("⚠️ The guild you provided does not exist.")
 			);
 			return;
 		}
@@ -106,14 +117,18 @@ export default class Voice extends Command {
 
 		if (!voiceChannel) {
 			this.message.channel.send(
-				"⚠️ The voice channel you provided does not exist."
+				Credits.Append(
+					"⚠️ The voice channel you provided does not exist."
+				)
 			);
 			return;
 		}
 
 		if (voiceChannel.type !== "GUILD_VOICE") {
 			this.message.channel.send(
-				"⚠️ The channel you provided is not a voice channel."
+				Credits.Append(
+					"⚠️ The channel you provided is not a voice channel."
+				)
 			);
 			return;
 		}
@@ -121,7 +136,9 @@ export default class Voice extends Command {
 		await this.join(guildId, channelId);
 
 		await this.message.channel.send(
-			`🔊 Joined voice channel **${voiceChannel.name}** in guild **${guild.name}**.`
+			Credits.Append(
+				`🔊 Joined voice channel **${voiceChannel.name}** in guild **${guild.name}**.`
+			)
 		);
 	}
 }

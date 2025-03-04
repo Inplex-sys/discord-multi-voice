@@ -7,7 +7,9 @@ A Discord selfbot client that allows you to join multiple voice channels through
 -   [x] Join multiple voice channels at the same time with the `voice` command
 -   [x] Check Discord API latency with the `ping` command
 -   [x] Colorful console logging with the `Logs` utility
--   [ ] Freezing the group
+-   [x] Freezing the group with the `freeze-group` command making it impossible to remove or add people to the group.
+-   [x] Clearing your messages with the `clear` command
+-   [ ] Automatically answering to mentions.
 
 https://github.com/user-attachments/assets/29415551-890e-494e-afac-b16926c67505
 

@@ -1,4 +1,5 @@
 import Command from "@Commands/command";
+import Credits from "@Utils/Credits";
 
 import type { Message } from "discord.js-selfbot-v13";
 
@@ -20,10 +21,9 @@ export default class Ping extends Command {
 		const endTime = Date.now();
 
 		const latency = endTime - startTime;
-		const apiLatency = Math.round(this.message.client.ws.ping);
 
 		await message.edit(
-			`Pong! 🏓\nMessage Latency: ${latency}ms\nAPI Latency: ${apiLatency}ms`
+			Credits.Append(`🏓 Api latency is \`${latency}ms\``)
 		);
 	}
 }

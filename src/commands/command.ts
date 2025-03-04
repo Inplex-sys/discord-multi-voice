@@ -1,3 +1,5 @@
+import Credits from "@Utils/Credits";
+
 import type { Message } from "discord.js-selfbot-v13";
 
 /**
@@ -10,7 +12,13 @@ export default class Command {
 	/** The name of the command */
 	name: string;
 	/** List of parameters the command accepts */
-	parameters: string[];
+	parameters: {
+		name: string;
+		type: string;
+		description: string;
+		required: boolean;
+		default?: any;
+	}[];
 	/** Description of what the command does */
 	description: string;
 	/** Alternative command names that can trigger this command */
@@ -29,7 +37,13 @@ export default class Command {
 		message: Message,
 		metadata: {
 			name: string;
-			parameters: string[];
+			parameters: {
+				name: string;
+				type: string;
+				description: string;
+				required: boolean;
+				default?: any;
+			}[];
 			description: string;
 			aliases: string[];
 		}
@@ -42,10 +56,59 @@ export default class Command {
 	}
 
 	/**
-	 * Extracts command parameters from the message content
-	 * @returns {Promise<string[]>} Array of parameter strings from the message
+	 * Extracts command parameters from the message content and applies default values
+	 * @returns {Promise<any[]>} Array of processed parameter values
 	 */
-	async getParameters(): Promise<string[]> {
-		return this.message.content.split(" ").slice(1);
+	async getParameters(): Promise<any[] | null> {
+		const content = this.message.content.split(" ");
+		const rawParams = content.slice(1);
+		const processedParams: any[] = [];
+
+		if (rawParams.length !== this.parameters.length) {
+			await this.message.channel.send(
+				Credits.Append(
+					`⚠️ You must provide the following parameters: ${this.parameters
+						.map((p) => p.name)
+						.join(", ")}.`
+				)
+			);
+
+			return null;
+		}
+
+		for (let i = 0; i < this.parameters.length; i++) {
+			const paramDef = this.parameters[i];
+			const rawValue = rawParams[i];
+
+			if (rawValue !== undefined) {
+				switch (paramDef.type.toLowerCase()) {
+					case "number":
+						processedParams.push(Number(rawValue));
+						break;
+					case "boolean":
+						processedParams.push(
+							rawValue.toLowerCase() === "true" ||
+								rawValue.toLowerCase() === "yes"
+						);
+
+						break;
+					default:
+						processedParams.push(rawValue);
+				}
+			} else if (paramDef.required) {
+				this.message.channel.send(
+					Credits.Append(
+						`❌ Missing required parameter \`${paramDef.name}\``
+					)
+				);
+				return null;
+			} else if (paramDef.default !== undefined) {
+				processedParams.push(paramDef.default);
+			} else {
+				processedParams.push(undefined);
+			}
+		}
+
+		return processedParams;
 	}
 }

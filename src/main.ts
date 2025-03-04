@@ -3,13 +3,15 @@ import "dotenv/config";
 import chalk from "chalk";
 import { Client } from "discord.js-selfbot-v13";
 
+import Clear from "@Commands/clear";
+import FreezeGroup from "@Commands/freezeGroup";
 import Ping from "@Commands/ping";
 import Voice from "@Commands/voice";
 import Logs from "@Utils/Logs";
 
 const client = new Client();
 
-const commands = [Ping, Voice];
+const commands = [Ping, Voice, FreezeGroup, Clear];
 
 client.on("ready", async () => {
 	if (!client.user || !client.user.username) {
@@ -32,14 +34,16 @@ client.on("messageCreate", async (message) => {
 
 	if (!command) return;
 
-	const instance = new command(message);
-	await instance.execute();
+	message.delete();
 
 	Logs.Info(
 		`${chalk.magenta("[" + message.author.username + "]")} &${
 			command.metadata.name
 		}`
 	);
+
+	const instance = new command(message);
+	await instance.execute();
 });
 
 client.login(Bun.env.TOKEN);
