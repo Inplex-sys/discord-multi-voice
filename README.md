@@ -42,6 +42,8 @@ bun run start
 
 -   `&voice [link]` - Join a Discord voice channel using a channel link
 -   `&ping` - Check your latency to the Discord API
+-   `&clear [amount]` - Clear your messages in the current channel
+-   `&freeze-group` - Freeze the group making it impossible to remove or add people to the group.
 
 ## Docker Support
 
