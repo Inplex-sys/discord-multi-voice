@@ -1,6 +1,7 @@
-# Discord Multi-Voice (A useful Self-Afk selfbot)
+# Selfcord
 
-A Discord selfbot client that allows you to join multiple voice channels through commands.
+A Discord selfbot client that allows you to join multiple voice channels through commands and have
+embeded auto-afk features.
 
 ## Features (User)
 
