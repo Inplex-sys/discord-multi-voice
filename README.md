@@ -8,8 +8,8 @@ A Discord selfbot client that allows you to join multiple voice channels through
 
 ## Features (User)
 
--   [x] Join voice channels with the `Voice` command
--   [x] Check Discord API latency with the `Ping` command
+-   [x] Join multiple voice channels at the same time with the `voice` command
+-   [x] Check Discord API latency with the `ping` command
 -   [x] Colorful console logging with the `Logs` utility
 -   [ ] Freezing the group
 
